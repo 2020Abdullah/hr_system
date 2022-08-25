@@ -17,7 +17,6 @@ class CreateSystemsTable extends Migration
             $table->id();
             $table->string('Group_name');
             $table->integer('total_hour_price');
-            $table->integer('total_discount_hour');
             $table->string('holidays');
             $table->timestamps();
         });

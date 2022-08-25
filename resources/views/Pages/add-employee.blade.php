@@ -20,7 +20,7 @@ Hr-system
     <div class="card-title-wrap bar-success">
         <h4 class="card-title" id="horz-layout-basic">Employee Information</h4>
     </div>
-    <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+    <p class="mb-0">On this page, you add employees to the system.</p>
 </div>
 <div class="card-body">
     <form action="{{route('store_employee')}}" class="form form-horizontal" method="POST" enctype="multipart/form-data">

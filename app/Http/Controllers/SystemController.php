@@ -14,7 +14,6 @@ class SystemController extends Controller
         system::create([
             'Group_name'       => $request->Group_name,
             'total_hour_price' => $request->extra,
-            'total_discount_hour' => $request->Discount,
             'holidays'            => $request->holdays,
         ]);
         return back()->with('success', 'Dated Saved successfly');

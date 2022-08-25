@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,7 @@ Route::post('/Attendances/store', [AttendanceController::class, 'store'])->name(
 
 Route::get('/system', [SystemController::class, 'index'])->name('system');
 Route::post('/system/store', [SystemController::class, 'store'])->name('system.store');
+
+// Salary Reports
+Route::get('/SalaryReports', [ReportController::class, 'index'])->name('Reports');
+

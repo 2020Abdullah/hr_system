@@ -22,6 +22,7 @@ class CreateAttendancesTable extends Migration
             $table->date('absence_date')->nullable();
             $table->integer('total_hours_amount')->default(0);
             $table->integer('total_price_amount')->default(0);
+            $table->integer('diff_hours_over')->default(0);
             $table->integer('Discount_total')->default(0);
             $table->foreignId('employee_id')->references('id')->on('employees')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('system_id')->references('id')->on('systems')->cascadeOnDelete()->cascadeOnUpdate();

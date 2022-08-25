@@ -29,6 +29,8 @@ class CreateEmployeesTable extends Migration
             $table->string("Nationality")->nullable();
             $table->string("personal_img")->nullable();
             $table->string("comment")->nullable();
+            $table->integer('total_Attendance_days')->default(0);
+            $table->integer('total_Absent_days')->default(0);
             $table->timestamps();
         });
     }

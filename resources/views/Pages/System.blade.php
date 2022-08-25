@@ -14,7 +14,7 @@ Hr System
         <div class="card-title-wrap bar-success">
             <h4 class="card-title" id="horz-layout-basic">General Settings Form </h4>
         </div>
-        <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+        <p class="mb-0">On this page you adjust the entire system settings.</p>
     </div>
     <div class="card-body">
         <div class="px-3">
@@ -33,13 +33,6 @@ Hr System
                         <label class="col-md-3 label-control" for="projectinput1">hour price: </label>
                         <div class="col-md-9">
                             <input type="text" id="projectinput1" class="form-control" name="extra">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-3 label-control" for="projectinput2">
-                            Discount price : </label>
-                        <div class="col-md-9">
-                            <input type="text" id="projectinput2" class="form-control" name="Discount">
                         </div>
                     </div>
                     <div class="form-group row">

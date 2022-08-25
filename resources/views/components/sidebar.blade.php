@@ -27,7 +27,7 @@
             <li class=" nav-item"><a href="{{route('Attendance')}}"><i class="icon-support"></i><span data-i18n="" class="menu-title">
                Attendance</span></a>
             </li>
-            <li class=" nav-item"><a href="salary_report.html"><i class="icon-layers"></i><span data-i18n="" class="menu-title">Salary report</span></a>
+            <li class=" nav-item"><a href="{{route('Reports')}}"><i class="icon-layers"></i><span data-i18n="" class="menu-title">Salary report</span></a>
             </li>
             <li class=" nav-item"><a href="users.html"><i class="icon-users"></i><span data-i18n="" class="menu-title">Users</span></a>
             </li>

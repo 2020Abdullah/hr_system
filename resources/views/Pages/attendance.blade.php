@@ -18,8 +18,9 @@ Attendance and departure
 </div>
 <div class="card-body collapse show">
     <div class="card-block card-dashboard">
-        <p class="card-text">DataTables has most features enabled by default,
-            so all you need to do to use it with your own ables is to call the construction</p>
+        <p class="card-text">
+            On this page you will find the attendance and departure record where you can record the attendance and departure of employees .
+        </p>
         <table class="table table-striped table-bordered zero-configuration mt-40 example">
             <thead>
                 <tr>
@@ -27,7 +28,6 @@ Attendance and departure
                     <th>Date </th>
                     <th>Attendance date</th>
                     <th>check-out date</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,10 +41,9 @@ Attendance and departure
                         @else
                             <td>{{ date("h:i a", strtotime($att->departure_time)) }}</td>
                         @endif
-                        <td><a href="#" class="btn btn-danger"><i class="icon-trash"></i> Delete</a></td>
                     </tr>
                 @empty
-                    <tr>
+                    <tr class="text-center">
                         <td colspan="6">No attendance yet</td>
                     </tr>
                 @endforelse
@@ -60,14 +59,14 @@ Attendance and departure
 </div>
 <div class="card-body collapse show">
     <div class="card-block card-dashboard">
-        <p class="card-text">DataTables has most features enabled by default,
-            so all you need to do to use it with your own ables is to call the construction</p>
+        <p class="card-text">
+            On this page you will find the attendance and departure record where you can record the attendance and departure of employees .
+        </p>
         <table class="table table-striped table-bordered zero-configuration mt-40 example">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>absence date</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,10 +74,9 @@ Attendance and departure
                     <tr>
                         <td>{{$aba->fname}}</td>
                         <td>{{$aba->absence_date}}</td>
-                        <td><a href="#" class="btn btn-danger"><i class="icon-trash"></i> Delete</a></td>
                     </tr>
                 @empty
-                    <tr>
+                    <tr class="text-center">
                         <td colspan="4">No absence yet</td>
                     </tr>
                 @endforelse
@@ -188,17 +186,34 @@ Attendance and departure
 <script>
     $(function(){
         $('.example').DataTable();
-
-        $("#cancel").on('click', function(){
-            $(":input", ".form").not(':button, :submit, :reset, :hidden').val('');
-        })
     });
+
+    $("#cancel").on('click', function(){
+            $(":input", ".form").not(':button, :submit, :reset, :hidden').val('');
+    })
 </script>
 
 @if ($errors->any())
     @foreach ($errors->all() as $error)
         <script>
             $(function(){
+                toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+                }
                 toastr["error"]("{{ $error }}")
             });
         </script>
