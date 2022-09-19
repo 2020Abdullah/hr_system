@@ -11,6 +11,12 @@ class SystemController extends Controller
         return view('Pages.System');
     }
     public function store(Request $request){
+
+        $request->validate([
+            'Group_name' => 'required',
+            'extra'      => 'required|numeric',
+        ]);
+
         system::create([
             'Group_name'       => $request->Group_name,
             'total_hour_price' => $request->extra,

@@ -10,13 +10,18 @@
         <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('assets/fonts/feather/style.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/fonts/simple-line-icons/style.css')}}">
-        <link rel="stylesheet" href="{{asset('assets/fonts/font-awesome/css/all.min.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/vendors/css/font-awesome/css/font-awesome.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/vendors/css/perfect-scrollbar.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/vendors/css/chartist.min.css')}}">
-        <link rel="stylesheet" href="{{asset('assets/vendors/css/bootstrap.min.css')}}">
         <link rel="stylesheet" href="{{asset('assets/vendors/css/toastr.min.css')}}">
         <link rel="stylesheet" href="{{ asset('assets/css/jquery.dataTables.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
+        @if (App::getLocale() == 'ar')
+            <link rel="stylesheet" href="{{asset('assets/vendors/css/bootstrapRTL.min.css')}}">
+            <link rel="stylesheet" href="{{ asset('assets/css/rtl.css') }}">
+        @else
+            <link rel="stylesheet" href="{{asset('assets/vendors/css/bootstrap.min.css')}}">
+        @endif
     </head>
     <body class="pace-done">
         <div class="pace pace-inactive"><div class="pace-progress" data-progress-text="100%" data-progress="99">

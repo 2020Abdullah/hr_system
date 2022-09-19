@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\attendance;
 use App\Models\Employee;
-use App\Models\reports;
+use App\Models\reports_employee;
 use App\Models\system;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class AttendanceController extends Controller
 {
@@ -41,7 +42,7 @@ class AttendanceController extends Controller
 
         // get system discount && hours price && calc diff hours_employee
 
-        $total_hour_price = system::where('id', $employee_group_id)->pluck('total_hour_price')->first();
+        $sys_hour_price = system::where('id', $employee_group_id)->pluck('total_hour_price')->first();
 
         $starttime = Carbon::parse(Employee::where('id', $employee_id)->pluck('starttime')->first());
         $endtime = Carbon::parse(Employee::where('id', $employee_id)->pluck('endtime')->first());
@@ -54,11 +55,18 @@ class AttendanceController extends Controller
 
         // check the employee absence or No
 
+        // calc discount day Absent
+
+        $Absent_day_discount = $sys_hour_price * $diff_hours;
+
+        // write days report
+
+        $lastID = reports_employee::pluck('id')->last();
+        // Make a new report id with appending last increment + 1
+
+        $newID = '0' . date('Ymd') . str_pad($lastID + 1 , 3, STR_PAD_LEFT);
+
         if($request->has('Absent')){
-
-            // calc discount day Absent
-
-            $Absent_day_discount = $total_hour_price * $diff_hours;
 
             // when Absent the employee
 
@@ -69,7 +77,6 @@ class AttendanceController extends Controller
                     'absence_date' => $employee_date,
                     'employee_id'   => $employee_id,
                     'system_id'     => $employee_group_id,
-                    'Discount_total'  => $Absent_day_discount,
                 ]);
             }
             else {
@@ -78,147 +85,118 @@ class AttendanceController extends Controller
                     'absence_date'  => $employee_date,
                     'employee_id'   => $employee_id,
                     'system_id'     => $employee_group_id,
-                    'Discount_total'  => $Absent_day_discount,
                 ]);
             }
-            $total_absence_days = attendance::where('employee_id', $employee_id)->where('do_absence', 1)->count();
 
-            $update_Employee = Employee::where('id', $employee_id);
+            $count_total_day_Absent = attendance::where('employee_id', $employee_id)->where('do_absence', 1)->count();
 
-            $update_Employee->update([
-                'total_Absent_days' => $total_absence_days
+            $Emp_total_discount_day = Employee::where('id', $employee_id);
+            $Emp_total_discount_day->update([
+                'total_Absent_days' => $count_total_day_Absent,
             ]);
 
-            // write report Abasent day
+            // write report discount
+            $report = reports_employee::where('employee_id', $employee_id)->where('report_date', $employee_date)->exists();
 
-            $total_hours_amount = attendance::where('employee_id', $employee_id)->where('absence_date', $employee_date)->pluck('total_hours_amount')->last();
+            if($report) {
 
-            $diff_hours_amount = attendance::where('employee_id', $employee_id)->where('absence_date', $employee_date)->pluck('diff_hours_over')->last();
+                $report = reports_employee::where('employee_id', $employee_id)->where('report_date', $employee_date);
 
-            $discount_total = attendance::where('employee_id', $employee_id)->where('absence_date', $employee_date)->pluck('Discount_total')->last();
-
-            $report = reports::where('employee_id', $employee_id)->where('report_date', $employee_date)->exists();
-            if($report){
-                $update_report = reports::where('employee_id', $employee_id)->where('report_date', $employee_date);
-                $update_report->update([
-                    'report_date'           => $employee_date,
-                    'hour_price'            => $total_hour_price,
-                    'discount_total'        => $Absent_day_discount,
-                    'total'                 => $discount_total,
-                    'employee_id'           => $employee_id,
+                $report->update([
+                    'hour_price'    => 0,
+                    'total_disconut' => $Absent_day_discount,
+                    'employee_id'   => $employee_id,
                 ]);
+
             }
             else {
-                reports::create([
-                    'report_date'           => $employee_date,
-                    'hour_price'            => $total_hour_price,
-                    'discount_total'        => $Absent_day_discount,
-                    'total'                 => $discount_total,
-                    'employee_id'           => $employee_id,
+                reports_employee::create([
+                    'report_date'   => $employee_date,
+                    'report_num'    => $newID,
+                    'total_disconut' => $Absent_day_discount,
+                    'employee_id'   => $employee_id,
                 ]);
             }
-
+            Session::flash('success' , 'تم إضافة البيانات بنجاح');
         }
         else {
+
             $attendance_exists = attendance::where('date', $employee_date)->where('employee_id', $employee_id)->exists();
 
             // calc attendance_time && departure_time
 
-            $attendance_time = Carbon::parse($employee_attendance_time);
-            $departure_time = Carbon::parse($employee_departure_time);
+            $attendance_time = Carbon::parse($employee_attendance_time); // 9
+            $departure_time = Carbon::parse($employee_departure_time); // 3
 
-            $diff_time = $departure_time->diffInHours($attendance_time);
+            $diff_time = $departure_time->diffInHours($attendance_time); // 6
 
-            $total_day = $total_hour_price * $diff_time;
+            $check_date = attendance::where('absence_date', $employee_date)->exists();
 
-            $diff_work = $diff_time - $diff_hours;
-
-            if($attendance_exists){
-                $attendance = attendance::where('employee_id', $employee_id)->where('date', $employee_date);
-                $attendance->update([
-                    'date'         => $employee_date,
-                    'attendance_time'  => $employee_attendance_time,
-                    'departure_time' => $employee_departure_time,
-                    'do_absence'    => 0,
-                    'absence_date' => $employee_date,
-                    'employee_id'   => $employee_id,
-                    'system_id'     => $employee_group_id,
-                ]);
-
-                $attendance_de = attendance::where('employee_id', $employee_id)->where('date', $employee_date);
-                $attendance_de->update([
-                    'total_hours_amount' => $diff_time,
-                    'total_price_amount' => $total_day,
-                    'diff_hours_over'     => $diff_work,
-                ]);
-            }
-            else {
-                attendance::create([
-                    'date'         => $employee_date,
-                    'attendance_time'  => $employee_attendance_time,
-                    'departure_time' => $employee_departure_time,
-                    'total_hours_amount' => $diff_time,
-                    'total_price_amount' => $total_day,
-                    'diff_hours_over'     => $diff_work,
-                    'do_absence'    => 0,
-                    'employee_id'   => $employee_id,
-                    'system_id'     => $employee_group_id,
-                ]);
-            }
-
-            // write discount days report
-
-            $total_hours_amount = attendance::where('employee_id', $employee_id)->where('date', $employee_date)->pluck('total_hours_amount')->last();
-            $diff_hours_amount = attendance::where('employee_id', $employee_id)->where('date', $employee_date)->pluck('diff_hours_over')->last();
-            $discount_total = attendance::where('employee_id', $employee_id)->where('date', $employee_date)->pluck('Discount_total')->last();
-
-            if(isset($Absent_day_discount)){
-                $total = ($total_hours_amount * $total_hour_price) + ($diff_hours_amount * $total_hour_price) - $Absent_day_discount;
-            }
-            else {
-                $total = ($total_hours_amount * $total_hour_price) + ($diff_hours_amount * $total_hour_price);
-            }
-
-            $check_departure = attendance::where('employee_id', $employee_id)->where('date', $employee_date)->first();
-
-            if($check_departure->departure_time !== null){
-
-                $total_attendance_days = attendance::where('employee_id', $employee_id)->where('do_absence', 0)->count();
-
-                $update_Employee = Employee::where('id', $employee_id);
-
-                $update_Employee->update([
-                    'total_Attendance_days' => $total_attendance_days
-                ]);
-
-                $report = reports::where('employee_id', $employee_id)->where('report_date', $employee_date)->exists();
-                if($report){
-                    $update_report = reports::where('employee_id', $employee_id);
-                    $update_report->update([
-                        'report_date'           => $employee_date,
-                        'hour_price'            => $total_hour_price,
-                        'total_hours'           => $total_hours_amount,
-                        'total_hours_overtime'  => $diff_hours_amount,
-                        'discount_total'        => $discount_total,
-                        'total'                 => $total,
-                        'employee_id'           => $employee_id,
+            if(!$check_date){
+                if($attendance_exists){
+                    $attendance = attendance::where('employee_id', $employee_id)->where('date', $employee_date);
+                    $attendance->update([
+                        'date'              => $employee_date,
+                        'attendance_time'   => $employee_attendance_time,
+                        'departure_time'    => $employee_departure_time,
+                        'do_absence'        => 0,
+                        'employee_id'       => $employee_id,
+                        'system_id'         => $employee_group_id,
                     ]);
                 }
                 else {
-                    reports::create([
-                        'report_date'           => $employee_date,
-                        'hour_price'            => $total_hour_price,
-                        'total_hours'           => $total_hours_amount,
-                        'total_hours_overtime'  => $diff_hours_amount,
-                        'discount_total'        => $discount_total,
-                        'total'                 => $total,
-                        'employee_id'           => $employee_id,
+                    attendance::create([
+                        'date'         => $employee_date,
+                        'attendance_time'  => $employee_attendance_time,
+                        'departure_time' => $employee_departure_time,
+                        'do_absence'    => 0,
+                        'employee_id'   => $employee_id,
+                        'system_id'     => $employee_group_id,
                     ]);
                 }
+                // write report employee
+
+                $check_departure = attendance::where('employee_id', $employee_id)->where('date', $employee_date)->pluck('departure_time')->first();
+
+                if($check_departure !== null){
+
+                    $count_total_day_attand = attendance::where('employee_id', $employee_id)->where('do_absence', 0)->count();
+
+                    $Emp_total_discount_day = Employee::where('id', $employee_id);
+                    $Emp_total_discount_day->update([
+                        'total_Attendance_days' => $count_total_day_attand,
+                    ]);
+
+                    $report_check = reports_employee::where('employee_id', $employee_id)->where('report_date', $employee_date)->exists();
+
+                    if($report_check){
+                        $report = reports_employee::where('employee_id', $employee_id)->where('report_date', $employee_date);
+                        $report->update([
+                            'hour_price'  => $sys_hour_price,
+                            'total_hours' => $diff_hours,
+                            'total_hours_overtime' => $diff_time,
+                            'employee_id'     => $employee_id,
+                        ]);
+                        Session::flash('success' , 'تم إضافة البيانات بنجاح');
+                    }
+                    else {
+                        reports_employee::create([
+                            'report_date' => $employee_date,
+                            'report_num'  => $newID,
+                            'hour_price'  => $sys_hour_price,
+                            'total_hours' => $diff_hours,
+                            'total_hours_overtime' => $diff_time,
+                            'employee_id'     => $employee_id,
+                        ]);
+                        Session::flash('success' , 'تم إضافة البيانات بنجاح');
+                    }
+
+                }
+            }
+            else {
+                Session::flash('error' , 'حصل خطأ فادح');
             }
         }
-
-
-        return back()->with('success', 'Dated Saved successfly');
+        return back();
     }
 }

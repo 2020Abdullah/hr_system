@@ -39931,6 +39931,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 a {
   color : #666EE8;
+  text-decoration: none;
+  list-style-type: none;
+  border-bottom: none;
+}
+span {
+    text-decoration: none;
+    border-bottom: none;
 }
 a:hover, a:focus {
   color : #5059E5;
@@ -46400,6 +46407,7 @@ datetime .form-group {
 .app-sidebar .navigation, .off-canvas-sidebar .navigation {
   margin-bottom : 0;
   padding-left : 0;
+  padding-bottom: 30px;
   list-style : none;
 }
 .app-sidebar .navigation li, .off-canvas-sidebar .navigation li {
@@ -53759,4 +53767,10 @@ margin-top:20px
 
 #absent {
     width: 15px;
+}
+.page-empty {
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color: #444;
+    text-align: center;
 }

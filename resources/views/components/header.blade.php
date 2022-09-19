@@ -26,9 +26,17 @@
               </div>
             </li>
             <li class="dropdown nav-item mt-1"><a id="dropdownBasic" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle"><i class="ft-flag blue-grey darken-4"></i><span class="selected-language d-none"></span></a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <div class="arrow_box_right"><a href="javascript:;" class="dropdown-item py-1"><img src="{{asset('assets/images/flags/us.png')}}" alt="English Flag" class="langimg"><span> English</span></a><a href="javascript:;" class="dropdown-item py-1"><img src="{{asset('assets/images/flags/es.png')}}" alt="Spanish Flag" class="langimg"><span> Spanish</span></a><a href="javascript:;" class="dropdown-item py-1"><img src="{{asset('assets/images/flags/br.png')}}" alt="Portuguese Flag" class="langimg"><span> Portuguese</span></a><a href="javascript:;" class="dropdown-item"><img src="{{asset('assets/images/flags/de.png')}}" alt="French Flag" class="langimg"><span> French</span></a></div>
-              </div>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <div class="arrow_box_right">
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            <li>
+                                <a rel="alternate" class="dropdown-item py-1" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    {{ $properties['native'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </div>
+                </ul>
             </li>
             <li class="dropdown nav-item mt-1"><a id="dropdownBasic2" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle"><i class="ft-bell blue-grey darken-4"></i><span class="notification badge badge-pill badge-danger">4</span>
                 <p class="d-none">Notifications</p></a>
@@ -38,15 +46,11 @@
                 </div>
               </div>
             </li>
-            <li class="nav-item mt-1 d-none d-lg-block"><a id="navbar-notification-sidebar" href="javascript:;" class="nav-link position-relative notification-sidebar-toggle"><i class="icon-equalizer blue-grey darken-4"></i>
-                <p class="d-none">Notifications Sidebar</p></a></li>
-            <li class="dropdown nav-item mr-0"><a id="dropdownBasic3" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-user-link dropdown-toggle"><span class="avatar avatar-online"><img id="navbar-avatar" src="{{asset('assets/images/portrait/small/avatar-s-3.jpg')}}" alt="avatar"></span>
-                <p class="d-none">User Settings</p></a>
-              <div aria-labelledby="dropdownBasic3" class="dropdown-menu dropdown-menu-right">
-                <div class="arrow_box_right"><a href="user-profile-page.html" class="dropdown-item py-1"><i class="ft-edit mr-2"></i><span>My Profile</span></a><a href="chat.html" class="dropdown-item py-1"><i class="ft-message-circle mr-2"></i><span>My Chat</span></a><a href="javascript:;" class="dropdown-item py-1"><i class="ft-settings mr-2"></i><span>Settings</span></a>
-                  <div class="dropdown-divider"></div><a href="javascript:;" class="dropdown-item"><i class="ft-power mr-2"></i><span>Logout</span></a>
-                </div>
-              </div>
+            <li class="nav-item mr-0">
+                <a href="#" class="nav-link">
+                    رصيد الصندوق :
+                    <span>10,000</span>
+                </a>
             </li>
           </ul>
         </div>

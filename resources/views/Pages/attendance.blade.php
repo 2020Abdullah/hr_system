@@ -1,7 +1,11 @@
 @extends('layouts.main')
 
 @section('page-title')
-Attendance and departure
+@if (App::getLocale() == 'ar')
+    سجل الحضور والإنصراف - برنامج قادر
+@else
+    Attendance and departure
+@endif
 @endsection
 
 @section('content')
@@ -13,21 +17,21 @@ Attendance and departure
 <div class="card">
 <div class="card-header">
     <div class="card-title-wrap bar-success">
-        <h4 class="card-title">Attendance and departure request</h4>
+        <h4 class="card-title">{{__('Attendance.Attendance_departure')}}</h4>
     </div>
 </div>
 <div class="card-body collapse show">
     <div class="card-block card-dashboard">
         <p class="card-text">
-            On this page you will find the attendance and departure record where you can record the attendance and departure of employees .
+            {{__('Attendance.page_desc')}}
         </p>
         <table class="table table-striped table-bordered zero-configuration mt-40 example">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Date </th>
-                    <th>Attendance date</th>
-                    <th>check-out date</th>
+                    <th>{{__('Attendance.Name')}}</th>
+                    <th>{{__('Attendance.Date')}}</th>
+                    <th>{{__('Attendance.Attendance_date')}}</th>
+                    <th>{{__('Attendance.check_out_date')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +48,7 @@ Attendance and departure
                     </tr>
                 @empty
                     <tr class="text-center">
-                        <td colspan="6">No attendance yet</td>
+                        <td colspan="6">{{__('Attendance.No attendance yet')}}</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -54,19 +58,16 @@ Attendance and departure
 
 <div class="card-header">
     <div class="card-title-wrap bar-success">
-        <h4 class="card-title">absence request </h4>
+        <h4 class="card-title">{{__('Attendance.absence request')}}</h4>
     </div>
 </div>
 <div class="card-body collapse show">
     <div class="card-block card-dashboard">
-        <p class="card-text">
-            On this page you will find the attendance and departure record where you can record the attendance and departure of employees .
-        </p>
         <table class="table table-striped table-bordered zero-configuration mt-40 example">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>absence date</th>
+                    <th>{{__('Attendance.Name')}}</th>
+                    <th>{{__('Attendance.absence date')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,7 +78,7 @@ Attendance and departure
                     </tr>
                 @empty
                     <tr class="text-center">
-                        <td colspan="4">No absence yet</td>
+                        <td colspan="4">{{__('Attendance.No absence yet')}}</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -88,7 +89,7 @@ Attendance and departure
 
 <div class="card-header">
     <div class="card-title-wrap bar-success">
-        <h4 class="card-title">Request A Form</h4>
+        <h4 class="card-title">{{__('Attendance.Request A Form')}}</h4>
     </div>
 </div>
 <div class="card-body">
@@ -97,7 +98,7 @@ Attendance and departure
     @csrf
     <div class="form-body">
         <div class="form-group row">
-            <label class="col-md-3 label-control" for="employ_name">Employee Name : </label>
+            <label class="col-md-3 label-control" for="employ_name">{{__('Attendance.EMPLOYEE NAME')}}</label>
             <div class="col-md-9">
                 <select id="employ_name" name="fcode" class="form-control">
                 <option value="">...</option>
@@ -108,7 +109,7 @@ Attendance and departure
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-md-3 label-control" for="Group_name">Group: </label>
+            <label class="col-md-3 label-control" for="Group_name">{{__('Attendance.GROUP')}}</label>
             <div class="col-md-9">
                 <select id="employ_group" name="group_id" class="form-control">
                     <option value="">...</option>
@@ -120,7 +121,7 @@ Attendance and departure
         </div>
 
         <div class="form-group row">
-            <label class="col-md-3 label-control" for="projectinput9">Date: </label>
+            <label class="col-md-3 label-control" for="projectinput9">{{__('Attendance.DATE')}} </label>
             <div class="col-md-9">
             <div class="position-relative has-icon-left">
                 <input type="date" id="timesheetinput3" class="form-control" name="date" value="<?php echo date('Y-m-d'); ?>">
@@ -134,7 +135,7 @@ Attendance and departure
         <div class=" row">
         <div class="col-md-12">
             <div class=" row form-group">
-            <label class="col-md-3 label-control">Start time: </label>
+            <label class="col-md-3 label-control">{{__('Attendance.START TIME')}}</label>
             <div class="position-relative has-icon-left col-lg-9">
                 <input type="time" id="timesheetinput5" class="form-control" name="starttime">
                 <div class="form-control-position">
@@ -145,7 +146,7 @@ Attendance and departure
         </div>
         <div class="col-md-12">
             <div class=" row form-group">
-            <label class="col-md-3 label-control">End time: </label>
+            <label class="col-md-3 label-control">{{__('Attendance.END TIME')}}</label>
             <div class="position-relative has-icon-left col-lg-9">
                 <input type="time" id="timesheetinput6" class="form-control" name="endtime">
                 <div class="form-control-position">
@@ -156,7 +157,7 @@ Attendance and departure
         </div>
         <div class="col-md-12">
             <div class=" row form-group">
-            <label class="col-md-3 label-control">Is the employee absent today : </label>
+            <label class="col-md-3 label-control">{{__('Attendance.ABSENT')}}</label>
             <div class="position-relative has-icon-left col-lg-9">
                 <input type="checkbox" id="Absent" value="1" name="Absent">
             </div>
@@ -167,10 +168,10 @@ Attendance and departure
     </div>
     <div class="form-actions">
         <button type="button" class="btn btn-danger mr-1" id="cancel">
-        <i class="icon-trash"></i> Cancel
+        <i class="icon-trash"></i> {{__('Attendance.cancel')}}
         </button>
         <button type="submit" class="btn btn-success">
-        <i class="icon-note"></i> Save
+        <i class="icon-note"></i> {{__('Attendance.save')}}
         </button>
     </div>
     </form>
@@ -221,28 +222,51 @@ Attendance and departure
 @endif
 
 @if($message = Session::get('success'))
-<script>
-$(function(){
-toastr.options = {
-"closeButton": true,
-"debug": false,
-"newestOnTop": false,
-"progressBar": true,
-"positionClass": "toast-top-right",
-"preventDuplicates": false,
-"onclick": null,
-"showDuration": "300",
-"hideDuration": "1000",
-"timeOut": "5000",
-"extendedTimeOut": "1000",
-"showEasing": "swing",
-"hideEasing": "linear",
-"showMethod": "fadeIn",
-"hideMethod": "fadeOut"
-}
-toastr["success"]("{{ $message }}")
-});
-</script>
+    <script>
+        $(function(){
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            toastr["success"]("{{ $message }}")
+        });
+    </script>
+@elseif ($message = Session::get('error'))
+    <script>
+        $(function(){
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+            }
+            toastr["error"]("{{ $message }}")
+        });
+    </script>
 @endif
 @endsection
 

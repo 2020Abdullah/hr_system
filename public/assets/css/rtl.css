@@ -1,0 +1,63 @@
+html, body {
+    direction: rtl;
+}
+.navbar .show > .dropdown-menu.notification-dropdown .arrow_box_right:after {
+    right: 22rem;
+}
+.navbar .show > .dropdown-menu .arrow_box_right:after {
+    right: 5.5rem;
+}
+/************  sidebar style *************/
+.app-sidebar .logo-img, .off-canvas-sidebar .logo-img {
+    width: 50px;
+    margin-right: -10px;
+}
+.app-sidebar, .off-canvas-sidebar {
+    left: auto;
+    right: 0;
+}
+.app-sidebar .navigation li.has-sub > a:after, .off-canvas-sidebar .navigation li.has-sub > a:after {
+    left: 1.75rem;
+    right: auto;
+}
+.app-sidebar .navigation, .off-canvas-sidebar .navigation {
+    padding-right: 0;
+    padding-left: auto;
+}
+.app-sidebar .navigation i, .off-canvas-sidebar .navigation i {
+    float: right;
+}
+/************  navbar style *************/
+.navbar {
+    right: 0;
+}
+.navbar .navbar-header {
+    padding-right: 240px;
+    padding-left: 0;
+}
+.navbar .navbar-nav {
+    margin-right: 250px;
+}
+@media (min-width: 992px) {
+    .main-panel .main-content {
+        padding-right: 250px;
+        padding-left: 0;
+    }
+}
+/************ General-setting style *************/
+.customizer {
+    left: 0;
+}
+.customizer.open {
+    left: 0;
+}
+.customizer .customizer-toggle {
+    left: 0;
+}
+form .has-icon-left .form-control {
+    padding-right: 0;
+    padding-left: 30rem;
+}
+form .has-icon-left .form-control-position {
+    display: none;
+}

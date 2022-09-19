@@ -1,8 +1,13 @@
 @extends('layouts.main')
 
 @section('page-title')
-Hr-System
+@if (App::getLocale() == 'ar')
+    برنامج قادر المحاسبي
+@else
+    POS System
+@endif
 @endsection
+
 
 @section('content')
 <!-------------  Dashboard (Add Employer) --------------->
